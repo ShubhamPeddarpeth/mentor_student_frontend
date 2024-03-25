@@ -10,7 +10,7 @@ function AssignorChangeMentor() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updated_mentor = await axios.patch(
-      `https://mentor-student-backend-d58b.onrender.com//${student}`,
+      `https://mentor-student-backend-d58b.onrender.com/${student}`,
       { mentor }
     );
     console.log(updated_mentor);
