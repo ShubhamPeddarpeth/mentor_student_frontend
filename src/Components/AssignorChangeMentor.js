@@ -15,7 +15,7 @@ function AssignorChangeMentor() {
     );
     console.log(updated_mentor);
     const stud_data = await axios.get(
-      `https://mentor-student-backend-d58b.onrender.com//Students`
+      `https://mentor-student-backend-d58b.onrender.com/Students`
     );
     setStudents(stud_data.data);
     setStudent("");
