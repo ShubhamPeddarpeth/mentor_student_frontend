@@ -7,20 +7,30 @@ function AssignorChangeMentor() {
     useContext(AssignMentorsContext);
   const [student, setStudent] = useState("");
   const [mentor, setMentor] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updated_mentor = await axios.patch(
-      `https://mentor-student-backend-ksz8.onrender.com/${student}`,
-      { mentor }
-    );
-    console.log(updated_mentor);
-    const stud_data = await axios.get(
-      `https://mentor-student-backend-ksz8.onrender.com/Students`
-    );
-    setStudents(stud_data.data);
-    setStudent("");
-    setMentor("");
+    try {
+      const updated_mentor = await axios.patch(
+        `https://mentor-student-backend-l3ea.onrender.com/Students/assign-mentor/${student}`,
+        { mentor }
+      );
+      console.log(updated_mentor);
+      const stud_data = await axios.get(
+        `https://mentor-student-backend-l3ea.onrender.com/Students`
+      );
+      setStudents(stud_data.data);
+      setStudent("");
+      setMentor("");
+      setErrorMessage(""); // Clear any previous error message
+      // Optionally, display a success message to the user
+    } catch (error) {
+      console.error("Error updating mentor:", error);
+      setErrorMessage("Error updating mentor. Please try again."); // Set error message for display
+    }
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -30,7 +40,7 @@ function AssignorChangeMentor() {
             Student<span style={{ color: "red" }}>*</span>
           </label>
           <select
-            class="form-control"
+            className="form-control"
             aria-label="Default select example"
             value={student}
             onChange={(e) => {
@@ -39,7 +49,11 @@ function AssignorChangeMentor() {
           >
             <option value=""></option>
             {students.map((student) => {
-              return <option value={student._id}>{student.name}</option>;
+              return (
+                <option key={student._id} value={student._id}>
+                  {student.name}
+                </option>
+              );
             })}
           </select>
         </div>
@@ -48,7 +62,7 @@ function AssignorChangeMentor() {
             Mentor<span style={{ color: "red" }}>*</span>
           </label>
           <select
-            class="form-control"
+            className="form-control"
             aria-label="Default select example"
             value={mentor}
             onChange={(e) => {
@@ -57,10 +71,16 @@ function AssignorChangeMentor() {
           >
             <option value=""></option>
             {mentors.map((mentor) => {
-              return <option value={mentor._id}>{mentor.name}</option>;
+              return (
+                <option key={mentor._id} value={mentor._id}>
+                  {mentor.name}
+                </option>
+              );
             })}
           </select>
         </div>
+        {errorMessage && <div className="text-danger">{errorMessage}</div>}{" "}
+        {/* Display error message if exists */}
         <button type="submit" className="btn btn-primary mb-3">
           Submit
         </button>

@@ -27,30 +27,31 @@ function AssignStudentsToMentor() {
     removedOptions = data;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    /* console.log("removed and selected");
-        console.log(removedOptions,selectedOptions) */
-    let selectedStudents = removedOptions.length
-      ? removedOptions
-      : selectedOptions;
-    /* console.log("selected studs")
-        console.log(selectedStudents) */
-    const stud_list = selectedStudents.map((stud) => {
-      return stud.value;
-    });
-    /* console.log("value sent to api")
-        console.log(stud_list,mentor); */
-    await axios.patch(`https://mentor-student-backend-ksz8.onrender.com`, {
-      mentor,
-      stud_list,
-    });
-    const stud_data = await axios.get(
-      `https://mentor-student-backend-ksz8.onrender.com`
-    );
-    /* console.log(stud_data.data) */
-    setStudents(stud_data.data);
-  };
+ const handleSubmit = async (e) => {
+   e.preventDefault();
+
+   // Extract student IDs from selectedOptions or removedOptions
+   const selectedStudentIds = (
+     removedOptions.length ? removedOptions : selectedOptions
+   ).map((student) => student.value);
+
+   try {
+     // Make PATCH request to assign mentor to selected students
+     await axios.patch(
+       `https://mentor-student-backend-l3ea.onrender.com/Students/assign-mentor-students`,
+       { mentor, studentIds: selectedStudentIds }
+     );
+
+     // Refresh student data after assignment
+     const updatedStudentData = await axios.get(
+       `https://mentor-student-backend-l3ea.onrender.com/Students`
+     );
+     setStudents(updatedStudentData.data);
+   } catch (error) {
+     console.error("Error assigning students to mentor:", error);
+   }
+ };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>

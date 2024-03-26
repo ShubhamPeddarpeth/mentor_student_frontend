@@ -13,7 +13,7 @@ function App() {
       <h2
         style={{ textAlign: "center", color: "seagreen", marginBottom: "2rem" }}
       >
-        Zen Mentors
+        Zen Mentors Student
       </h2>
       <AssignMentorProvider>
         <div className="row">

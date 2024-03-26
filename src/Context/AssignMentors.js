@@ -6,32 +6,37 @@ export const AssignMentorsContext = React.createContext();
 export const AssignMentorProvider = ({ children }) => {
   const [students, setStudents] = useState([]);
   const [mentors, setMentors] = useState([]);
-  const BaseURL = `https://mentor-student-backend-ksz8.onrender.com`;
-  const fetchData = async () => {
-    await axios
-      .get(`https://mentor-student-backend-ksz8.onrender.com`)
-      .then((response) => setMentors(response.data))
-      .then(() => console.log(mentors));
+  const BaseURL = `https://mentor-student-backend-l3ea.onrender.com`;
 
-    await axios
-      .get(`https://mentor-student-backend-ksz8.onrender.com`)
-      .then((response) => setStudents(response.data))
-      .then(() => console.log(students));
-  };
   useEffect(() => {
-    fetchData();
-    return () => {
-      <></>;
+    const fetchData = async () => {
+      try {
+        const mentorsResponse = await axios.get(`${BaseURL}/Mentors`);
+        setMentors(mentorsResponse.data);
+      } catch (error) {
+        console.error("Error fetching mentors:", error);
+      }
+
+      try {
+        const studentsResponse = await axios.get(`${BaseURL}/Students`);
+        setStudents(studentsResponse.data);
+      } catch (error) {
+        console.error("Error fetching students:", error);
+      }
     };
+
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log("Updated Students:", students);
+  }, [students]);
+
   return (
-    <>
-      {console.log(mentors, students)}
-      <AssignMentorsContext.Provider
-        value={[mentors, setMentors, students, setStudents]}
-      >
-        {children}
-      </AssignMentorsContext.Provider>
-    </>
+    <AssignMentorsContext.Provider
+      value={[mentors, setMentors, students, setStudents]}
+    >
+      {children}
+    </AssignMentorsContext.Provider>
   );
 };
