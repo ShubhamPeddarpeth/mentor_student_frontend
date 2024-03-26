@@ -13,12 +13,12 @@ function AssignorChangeMentor() {
     e.preventDefault();
     try {
       const updated_mentor = await axios.patch(
-        `https://mentor-student-backend-l3ea.onrender.com/Students/assign-mentor/${student}`,
+        `https://mentor-student-backend-u4lj.onrender.com/Students/assign-mentor/${student}`,
         { mentor }
       );
       console.log(updated_mentor);
       const stud_data = await axios.get(
-        `https://mentor-student-backend-l3ea.onrender.com/Students`
+        `https://mentor-student-backend-u4lj.onrender.com/Students`
       );
       setStudents(stud_data.data);
       setStudent("");

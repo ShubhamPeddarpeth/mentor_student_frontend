@@ -11,7 +11,7 @@ function MentorForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const posted_mentor = await axios.post(
-      `https://mentor-student-backend-l3ea.onrender.com/Mentors`,
+      `https://mentor-student-backend-u4lj.onrender.com/Mentors`,
       { name, email, course }
     );
     setMentors([...mentors, posted_mentor.data]);

@@ -12,7 +12,7 @@ function ShowMentorStudents() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const student_list = await axios.get(
-      `https://mentor-student-backend-l3ea.onrender.com/Students/mentor-students/${mentor}`
+      `https://mentor-student-backend-u4lj.onrender.com/Students/mentor-students/${mentor}`
     );
     console.log(student_list);
     setStudList(student_list.data);
