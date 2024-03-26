@@ -10,12 +10,12 @@ function AssignorChangeMentor() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updated_mentor = await axios.patch(
-      `https://mentor-student-backend-d58b.onrender.com/${student}`,
+      `https://mentor-student-backend-ksz8.onrender.com/${student}`,
       { mentor }
     );
     console.log(updated_mentor);
     const stud_data = await axios.get(
-      `https://mentor-student-backend-d58b.onrender.com/Students`
+      `https://mentor-student-backend-ksz8.onrender.com/Students`
     );
     setStudents(stud_data.data);
     setStudent("");

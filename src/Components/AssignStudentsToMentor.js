@@ -41,12 +41,12 @@ function AssignStudentsToMentor() {
     });
     /* console.log("value sent to api")
         console.log(stud_list,mentor); */
-    await axios.patch(`https://mentor-student-backend-d58b.onrender.com`, {
+    await axios.patch(`https://mentor-student-backend-ksz8.onrender.com`, {
       mentor,
       stud_list,
     });
     const stud_data = await axios.get(
-      `https://mentor-student-backend-d58b.onrender.com/`
+      `https://mentor-student-backend-ksz8.onrender.com`
     );
     /* console.log(stud_data.data) */
     setStudents(stud_data.data);
