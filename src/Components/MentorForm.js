@@ -1,24 +1,37 @@
 import React, { useState } from "react";
-import { useContext } from "react";
 import axios from "axios";
+import { useContext } from "react";
 import { AssignMentorsContext } from "../Context/AssignMentors";
+
 function MentorForm() {
   const [mentors, setMentors] = useContext(AssignMentorsContext);
-  console.log(mentors);
-  const [name, setname] = useState("");
-  const [email, setemail] = useState("");
-  const [course, setcourse] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [course, setCourse] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const posted_mentor = await axios.post(
-      `https://mentor-student-backend-u4lj.onrender.com/Mentors`,
-      { name, email, course }
-    );
-    setMentors([...mentors, posted_mentor.data]);
-    setname("");
-    setemail("");
-    setcourse("");
+    setLoading(true); // Set loading state to true when the request is initiated
+    try {
+      const response = await axios.post(
+        `https://mentor-student-backend-jft8.onrender.com/Mentors`,
+        { name, email, course }
+      );
+      setMentors([...mentors, response.data]);
+      setName("");
+      setEmail("");
+      setCourse("");
+      setErrorMessage(""); // Clear any previous error message
+    } catch (error) {
+      console.error("Error posting mentor:", error.message);
+      setErrorMessage("Error posting mentor. Please try again."); // Set error message for display
+    } finally {
+      setLoading(false); // Set loading state to false when the request is completed
+    }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <h4 className="text-info">Mentor Form</h4>
@@ -31,9 +44,7 @@ function MentorForm() {
           className="form-control"
           id="name"
           value={name}
-          onChange={(e) => {
-            setname(e.target.value);
-          }}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div className="mb-3">
@@ -45,9 +56,7 @@ function MentorForm() {
           className="form-control"
           id="email"
           value={email}
-          onChange={(e) => {
-            setemail(e.target.value);
-          }}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div className="mb-3">
@@ -59,14 +68,19 @@ function MentorForm() {
           className="form-control"
           id="course"
           value={course}
-          onChange={(e) => {
-            setcourse(e.target.value);
-          }}
+          onChange={(e) => setCourse(e.target.value)}
         />
       </div>
-      <button type="submit" className="btn btn-primary mb-3">
-        Submit
-      </button>
+      {loading ? (
+        <div className="text-info">Submitting...</div>
+      ) : (
+        <>
+          {errorMessage && <div className="text-danger">{errorMessage}</div>}
+          <button type="submit" className="btn btn-primary mb-3">
+            Submit
+          </button>
+        </>
+      )}
     </form>
   );
 }

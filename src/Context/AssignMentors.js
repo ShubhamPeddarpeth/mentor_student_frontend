@@ -6,7 +6,7 @@ export const AssignMentorsContext = React.createContext();
 export const AssignMentorProvider = ({ children }) => {
   const [students, setStudents] = useState([]);
   const [mentors, setMentors] = useState([]);
-  const BaseURL = `https://mentor-student-backend-u4lj.onrender.com`;
+  const BaseURL = `https://mentor-student-backend-jft8.onrender.com`;
 
   useEffect(() => {
     const fetchData = async () => {

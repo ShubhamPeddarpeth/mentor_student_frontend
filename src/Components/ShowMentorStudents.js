@@ -1,23 +1,28 @@
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { AssignMentorsContext } from "../Context/AssignMentors";
 
 function ShowMentorStudents() {
-  const [mentors, setMentors] = useContext(AssignMentorsContext);
-  console.log(mentors);
+  const [mentors] = useContext(AssignMentorsContext);
   const [mentor, setMentor] = useState("");
   const [studList, setStudList] = useState([]);
+  const [error, setError] = useState(null); // State to store error message
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const student_list = await axios.get(
-      `https://mentor-student-backend-u4lj.onrender.com/Students/mentor-students/${mentor}`
-    );
-    console.log(student_list);
-    setStudList(student_list.data);
-    setMentor("");
+    try {
+      const response = await axios.get(
+        `https://mentor-student-backend-jft8.onrender.com/Students/mentor-students/${mentor}`
+      );
+      setStudList(response.data);
+      setError(null); // Clear any previous error message
+    } catch (error) {
+      console.error("Error fetching mentor students:", error.message);
+      setError("Error fetching mentor students. Please try again."); // Set error message for display
+      setStudList([]); // Clear student list in case of error
+    }
   };
+
   return (
     <div>
       <h4 className="text-info">Students List based on Mentor Selection</h4>
@@ -27,7 +32,7 @@ function ShowMentorStudents() {
             Mentor<span style={{ color: "red" }}>*</span>
           </label>
           <select
-            class="form-control"
+            className="form-control"
             aria-label="Default select example"
             value={mentor}
             onChange={(e) => {
@@ -44,6 +49,8 @@ function ShowMentorStudents() {
           Show
         </button>
       </form>
+      {error && <div className="text-danger">{error}</div>}{" "}
+      {/* Display error message if exists */}
       {studList.length ? (
         <>
           <table className="table table-striped table-hover">

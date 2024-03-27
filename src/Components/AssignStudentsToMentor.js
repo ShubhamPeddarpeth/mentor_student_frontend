@@ -38,17 +38,17 @@ function AssignStudentsToMentor() {
     try {
       // Make PATCH request to assign mentor to selected students
       await axios.patch(
-        `https://mentor-student-backend-u4lj.onrender.com/Students/assign-mentor-students`,
+        `https://mentor-student-backend-jft8.onrender.com/Students/assign-mentor-students`,
         { mentor, studentIds: selectedStudentIds }
       );
 
       // Refresh student data after assignment
       const updatedStudentData = await axios.get(
-        `https://mentor-student-backend-u4lj.onrender.com/Students`
+        `https://mentor-student-backend-jft8.onrender.com/Students`
       );
       setStudents(updatedStudentData.data);
     } catch (error) {
-      console.error("Error assigning students to mentor:", error);
+      console.error("Error assigning students to mentor:", error.message);
     }
   };
 
@@ -61,7 +61,7 @@ function AssignStudentsToMentor() {
             Mentor<span style={{ color: "red" }}>*</span>
           </label>
           <select
-            class="form-control"
+            className="form-control"
             aria-label="Default select example"
             value={mentor}
             onChange={(e) => {
@@ -78,14 +78,7 @@ function AssignStudentsToMentor() {
           <label htmlFor="students" className="form-label">
             Students<span style={{ color: "red" }}>*</span>
           </label>
-          {/* <select multiple onChange={handleChange} class="form-control selectpicker">
-                        {
-                            students.map(student => {
-                                return <option value={student._id}>{student.name}</option>
-                            })
-                        }
-                    </select> */}
-          <div class="chat-container">
+          <div className="chat-container">
             <MultiSelect
               options={options}
               displayValue="name"

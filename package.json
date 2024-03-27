@@ -45,5 +45,5 @@
     "gh-pages": "^6.1.1",
     "webpack-dev-server": "^4.15.2"
   },
-  "proxy": "https://mentor-student-backend-u4lj.onrender.com"
+  "proxy": "https://mentor-student-backend-jft8.onrender.com"
 }

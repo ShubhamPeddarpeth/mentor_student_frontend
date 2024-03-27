@@ -13,22 +13,25 @@ function AssignorChangeMentor() {
     e.preventDefault();
     try {
       const updated_mentor = await axios.patch(
-        `https://mentor-student-backend-u4lj.onrender.com/Students/assign-mentor/${student}`,
-        { mentor }
+        `https://mentor-student-backend-jft8.onrender.com/Students/assign-mentor/${student}`,
+        { mentor },
+        console.log(updated_mentor)
       );
-      console.log(updated_mentor);
+      // Update students data if the request is successful
       const stud_data = await axios.get(
-        `https://mentor-student-backend-u4lj.onrender.com/Students`
+        `https://mentor-student-backend-jft8.onrender.com/Students`
       );
       setStudents(stud_data.data);
+      // Clear form fields and error message
       setStudent("");
       setMentor("");
       setErrorMessage(""); // Clear any previous error message
-      // Optionally, display a success message to the user
     } catch (error) {
-      console.error("Error updating mentor:", error);
-      setErrorMessage("Error updating mentor. Please try again."); // Set error message for display
+      console.error("Error updating mentor:", error.message);
+      // Set error message for display
+      setErrorMessage("Error updating mentor. Please try again.");
     }
+
   };
 
   return (

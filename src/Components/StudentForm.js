@@ -1,27 +1,33 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { AssignMentorsContext } from "../Context/AssignMentors";
+
 function StudentForm() {
   const [mentors, setMentors, students, setStudents] =
     useContext(AssignMentorsContext);
   const [name, setname] = useState("");
   const [batch, setBatch] = useState("");
   const [assignmentor, setassignMentor] = useState("");
+  const [error, setError] = useState(null); // State to store error message
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("AssignesMentor", assignmentor);
-    console.log(name, batch, assignmentor);
-    const posted_stud = await axios.post(
-      `https://mentor-student-backend-u4lj.onrender.com/Students`,
-      { name, batch, mentor: assignmentor }
-    );
-    console.log(posted_stud.data);
-    setStudents([...students, posted_stud.data]);
-    setname("");
-    setBatch("");
-    setassignMentor("");
+    try {
+      const posted_stud = await axios.post(
+        `https://mentor-student-backend-jft8.onrender.com/Students`,
+        { name, batch, mentor: assignmentor }
+      );
+      setStudents([...students, posted_stud.data]);
+      setname("");
+      setBatch("");
+      setassignMentor("");
+      setError(null); // Clear any previous error message
+    } catch (error) {
+      console.error("Error posting student:", error.message);
+      setError("Error posting student. Please try again."); // Set error message for display
+    }
   };
-  console.log(mentors);
+
   return (
     <form onSubmit={handleSubmit}>
       <h4 className="text-info">Student Form</h4>
@@ -58,7 +64,7 @@ function StudentForm() {
           Mentor
         </label>
         <select
-          class="form-control"
+          className="form-control"
           aria-label="Default select example"
           value={assignmentor}
           onChange={(e) => {
@@ -71,6 +77,8 @@ function StudentForm() {
           })}
         </select>
       </div>
+      {error && <div className="text-danger">{error}</div>}{" "}
+      {/* Display error message if exists */}
       <button type="submit" className="btn btn-primary mb-3">
         Submit
       </button>
